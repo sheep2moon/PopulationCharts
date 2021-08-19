@@ -25,6 +25,7 @@ const CountryDetails = () => {
       <Topbar>
         <SearchInput setSelectedCountry={setSelectedCountry} />
         <h2>{selectedCountry && selectedCountry.name}</h2>
+        <p>{selectedCountry && selectedCountry.region.value}</p>
       </Topbar>
       <ChartContainer>
         {countryData && <Chart countryData={countryData} />}
@@ -42,6 +43,10 @@ const CountryDetailsContainer = styled.section`
   padding: 1em;
   width: 100vw;
   max-width: 1200px;
+  @media screen and (max-width: 768px) {
+    min-height: 100vh;
+    display: grid;
+  }
 `;
 const Topbar = styled.div`
   display: flex;
@@ -51,8 +56,10 @@ const Topbar = styled.div`
   margin-bottom: 2rem;
   > h2 {
     font-size: 2em;
-    margin-right: 2rem;
     text-align: center;
+  }
+  > p {
+    font-size: 0.8rem;
   }
 `;
 const ChartContainer = styled.div``;

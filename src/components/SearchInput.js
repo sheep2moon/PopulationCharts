@@ -39,25 +39,27 @@ const SearchInput = ({ setSelectedCountry }) => {
 
   return (
     <SearchContainer>
-      <label htmlFor='search'>Search</label>
-      <StyledInput
-        id='search'
-        ref={searchInputRef}
-        onChange={handleInputChange}
-        type='text'
-        autoComplete='new-password'
-        placeholder='start typing'
-      />
-      <ResultsList>
-        {searchResults.map((result) => (
-          <ResultItem
-            key={result.id}
-            onClick={() => handleCountryChange(result)}
-          >
-            {result.name}
-          </ResultItem>
-        ))}
-      </ResultsList>
+      <label htmlFor='search-country'>Search:</label>
+      <InputContainer>
+        <StyledInput
+          id='search-country'
+          ref={searchInputRef}
+          onChange={handleInputChange}
+          type='text'
+          autoComplete='new-password'
+          placeholder='start typing'
+        />
+        <ResultsList>
+          {searchResults.map((result) => (
+            <ResultItem
+              key={result.id}
+              onClick={() => handleCountryChange(result)}
+            >
+              {result.name}
+            </ResultItem>
+          ))}
+        </ResultsList>
+      </InputContainer>
     </SearchContainer>
   );
 };
@@ -72,7 +74,7 @@ const SearchContainer = styled.div`
   justify-content: center;
   position: relative;
   > label {
-    margin-right: 2rem;
+    margin-right: 1rem;
     font-weight: 700;
   }
 `;
@@ -87,13 +89,15 @@ const StyledInput = styled.input`
 `;
 const ResultsList = styled.ul`
   position: absolute;
+  max-width: 30rem;
   top: 3rem;
   list-style: none;
-  width: 100%;
+  width: inherit;
   z-index: 2;
 `;
 const ResultItem = styled.li`
-  background-color: ${({ theme }) => theme.primary};
+  background-color: ${({ theme }) => theme.secondary};
+  color: #fff;
   cursor: pointer;
   height: 3em;
   display: flex;
@@ -101,7 +105,12 @@ const ResultItem = styled.li`
   padding: 0 8px;
   border: 1px solid #00000020;
   :hover {
-    background-color: #fff;
+    background-color: ${({ theme }) => theme.dark};
     opacity: 1;
   }
+`;
+
+const InputContainer = styled.div`
+  width: 100%;
+  max-width: 30rem;
 `;

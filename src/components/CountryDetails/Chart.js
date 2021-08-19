@@ -8,6 +8,7 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
+  Legend,
 } from 'recharts';
 
 const Chart = ({ countryData }) => {
@@ -16,11 +17,11 @@ const Chart = ({ countryData }) => {
   useEffect(() => {
     let formattedData = [];
     let year = 0;
-    let value = 0;
+    let population = 0;
     countryData.forEach((elem) => {
       year = parseInt(elem.date);
-      value = parseInt(elem.value);
-      formattedData.push({ year, value });
+      population = parseInt(elem.value);
+      formattedData.push({ year, population });
     });
     setChartData(formattedData.reverse());
     console.log(formattedData);
@@ -33,7 +34,7 @@ const Chart = ({ countryData }) => {
     if (value > 1000000) {
       return `${(value / 1000000).toFixed(1)}M`;
     }
-    return value;
+    return value.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
   };
 
   return (
@@ -45,15 +46,16 @@ const Chart = ({ countryData }) => {
             <stop offset='75%' stopColor='#185ADB' stopOpacity={0.05}></stop>
           </linearGradient>
         </defs>
-        <Area dataKey='value' fill='url(#chart-fill)' stroke='#0A1931' />
+        <Area dataKey='population' fill='url(#chart-fill)' stroke='#0A1931' />
         <XAxis dataKey='year' domain={['auto', 'auto']} />
         <YAxis
-          dataKey='value'
+          dataKey='population'
           tickCount={8}
           domain={['auto', 'auto']}
           tickFormatter={(value) => formatYTick(value)}
         />
         <Tooltip content={<ChartTooltip />} />
+        <Legend verticalAlign='top' height={36} />
         <CartesianGrid opacity={0.05} vertical={false} />
       </AreaChart>
     </ResponsiveContainer>
