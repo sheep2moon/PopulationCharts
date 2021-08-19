@@ -1,16 +1,14 @@
-import { useState } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
-import { lightTheme } from './commons/theme';
+import { theme } from './commons/theme';
 import CountryDetails from './components/CountryDetails';
-import SearchInput from './components/SearchInput';
+import Footer from './components/Footer';
 
 function App() {
-  const [selectedCountry, setSelectedCountry] = useState('PL');
   return (
-    <ThemeProvider theme={lightTheme}>
+    <ThemeProvider theme={theme}>
       <AppContainer>
-        <SearchInput setSelectedCountry={setSelectedCountry} />
-        <CountryDetails selectedCountry={selectedCountry} />
+        <CountryDetails />
+        <Footer />
       </AppContainer>
     </ThemeProvider>
   );
@@ -18,4 +16,11 @@ function App() {
 
 export default App;
 
-const AppContainer = styled.div``;
+const AppContainer = styled.div`
+  background-color: ${({ theme }) => theme.dark};
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;

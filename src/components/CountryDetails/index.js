@@ -1,39 +1,34 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import SearchInput from '../SearchInput';
 import Chart from './Chart';
 
-const CountryDetails = ({ selectedCountry }) => {
+const CountryDetails = () => {
   const [countryData, setCountryData] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState();
 
   useEffect(() => {
-    axios
-      .get(
-        `https://api.worldbank.org/v2/country/${selectedCountry}/indicator/SP.POP.TOTL?format=json`
-      )
-      .then((res) => {
-        setCountryData(res.data);
-      });
+    if (selectedCountry) {
+      axios
+        .get(
+          `https://api.worldbank.org/v2/country/${selectedCountry.id}/indicator/SP.POP.TOTL?format=json`
+        )
+        .then((res) => {
+          setCountryData(res.data[1]);
+        });
+    }
   }, [selectedCountry]);
-
-  if (countryData.length < 1) {
-    return <p>loading..</p>;
-  }
 
   return (
     <CountryDetailsContainer>
       <Topbar>
-        <h1>{countryData[1][0].country.value}</h1>
+        <SearchInput setSelectedCountry={setSelectedCountry} />
+        <h2>{selectedCountry && selectedCountry.name}</h2>
       </Topbar>
-      <Details>
-        <Chart countryData={countryData[1]} />
-        <InfoWrapper>
-          <h4>country</h4>
-          <p>kontynent</p>
-          <p>stolica</p>
-          <p>current population</p>
-        </InfoWrapper>
-      </Details>
+      <ChartContainer>
+        {countryData && <Chart countryData={countryData} />}
+      </ChartContainer>
     </CountryDetailsContainer>
   );
 };
@@ -41,9 +36,23 @@ const CountryDetails = ({ selectedCountry }) => {
 export default CountryDetails;
 
 const CountryDetailsContainer = styled.section`
-  padding: 10em;
-  max-width: 100vw;
+  background-color: ${({ theme }) => theme.primary};
+  border-radius: 1em;
+  margin: 0 auto;
+  padding: 1em;
+  width: 100vw;
+  max-width: 1200px;
 `;
-const Topbar = styled.div``;
-const Details = styled.div``;
-const InfoWrapper = styled.div``;
+const Topbar = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+  > h2 {
+    font-size: 2em;
+    margin-right: 2rem;
+    text-align: center;
+  }
+`;
+const ChartContainer = styled.div``;
