@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-const SearchInput = () => {
+const SearchInput = ({ setSelectedCountry }) => {
   const [countries, setCountries] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   useEffect(() => {
@@ -32,7 +32,12 @@ const SearchInput = () => {
       <StyledInput onChange={(e) => handleInputChange(e)} type='text' />
       <ResultsList>
         {searchResults.map((result) => (
-          <ResultItem key={result.id}>{result.name}</ResultItem>
+          <ResultItem
+            key={result.id}
+            onClick={() => setSelectedCountry(result.id)}
+          >
+            {result.name}
+          </ResultItem>
         ))}
       </ResultsList>
     </SearchContainer>
@@ -41,7 +46,9 @@ const SearchInput = () => {
 
 export default SearchInput;
 
-const SearchContainer = styled.div``;
+const SearchContainer = styled.div`
+  max-width: 20em;
+`;
 const StyledInput = styled.input``;
 const ResultsList = styled.ul`
   list-style: none;
